@@ -1,47 +1,29 @@
 const path = require("path");
 const express = require("express");
+const { engine } = require("express-handlebars");
+
 const app = express();
 const port = 3000;
-
 const hostname = "127.0.0.1";
 
+app.use(express.static("public"));
+
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./views");
+
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
+  res.render("site/index");
 });
+
 app.get("/about", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "about.html"));
+  res.render("site/about");
 });
-app.get("/contact", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "contact.html"));
+
+app.get("/blog", (req, res) => {
+  res.render("site/blog");
 });
 
 app.listen(port, hostname, () =>
   console.log(`server çalışıyor, http://${hostname}:${port}`)
 );
-
-// const http = require("http");
-// const { createServer } = require("http-proxy");
-// const fs = require("fs");
-
-// const port = 3000;
-
-// const indexPage = fs.readFileSync("index.html");
-// const aboutPage = fs.readFileSync("about.html");
-// const contactPage = fs.readFileSync("contact.html");
-
-// const server = http.createServer((req, res) => {
-//   if (req.url === "/") {
-//     return res.end(indexPage);
-//   } else if (req.url === "/about") {
-//     return res.end(aboutPage);
-//   } else if (req.url === "/contact") {
-//     return res.end(contactPage);
-//   } else {
-//     res.statusCode = 404;
-//     res.end("Selamlar");
-//   }
-// });
-
-// server.listen(port, hostname, () => {
-//   console.log(`server çalışıyor, http://${hostname}:${port}`);
-// });
